@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
-function App() {
+import Sidebar from "./components/Sidebar";
+import Documents from "./pages/Documents"; // Make sure this path is correct
+import Dashboard from "./pages/Dashboard";
+import Reports from './pages/Reports';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1 bg-gray-100 min-h-screen p-6">
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />  {/* Optional: set as default */}
+            <Route path="/dashboard" element={<Dashboard />} />               {/* ✅ Add this */}
+            <Route path="/portfolio-analysis" element={<Documents />} />
+            <Route path="/reports" element={<Reports />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
