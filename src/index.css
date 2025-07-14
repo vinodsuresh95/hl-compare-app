@@ -5,6 +5,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  .bullet-text {
+    white-space: pre-wrap;         /* allows line wrap */
+    word-break: break-word;        /* wraps long words */
+    margin-bottom: 10px;           /* spacing between bullets */
+    padding-left: 15px;            /* indent after bullet */
+    position: relative;
+  }
+  
+
 }
 
 code {

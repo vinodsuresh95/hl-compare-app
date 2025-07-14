@@ -72,43 +72,29 @@ const Documents = () => {
     };
 
     const handleDownloadPDF = async () => {
-        if (!summary) {
-            alert("Generate summary before downloading PDF.");
-            return;
-        }
-
-        const payload = {
-            summary,
-            entityA,
-            entityB,
-            query,
-        };
-
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/download-pdf", {
-                method: "POST",
-                body: JSON.stringify(payload),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to download PDF");
-            }
-
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "comparison_summary.pdf";
-            a.click();
-            window.URL.revokeObjectURL(url);
+          const response = await fetch("http://localhost:8000/api/download-pdf", {
+            method: "GET",
+          });
+      
+          if (!response.ok) {
+            throw new Error("PDF download failed");
+          }
+      
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+      
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "comparison_summary.pdf";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
         } catch (error) {
-            console.error("PDF download failed", error);
-            alert("PDF download failed. Check console for error details.");
+          console.error("Download PDF error:", error);
         }
-    };
+      };
+
 
     const renderEntityInfo = (entityData) => {
         if (!entityData || typeof entityData !== "object") return <p>No data</p>;
@@ -121,7 +107,7 @@ const Documents = () => {
 
         return (
             <div className="space-y-2">
-                <p className="text-sm">{text}</p>
+                <p className="bullet-text">{text}</p>
                 <div className="text-xs flex space-x-2 items-center">
                     <span className={`text-white px-2 py-1 rounded ${badgeColor}`}>
                         {confidence_score}%
